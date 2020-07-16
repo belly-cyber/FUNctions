@@ -1,21 +1,11 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# In[70]:
-
-
 import os,requests,re,stat
 from getpass import getuser
 
-
-# In[71]:
-
-
 raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/'
 path='/home/{}/'.format(getuser())
-
-
-# In[30]:
 
 
 if os.path.exists(path+'scripts/') == False:
@@ -27,14 +17,8 @@ with open(path+'.bash_aliases','a') as f:
     f.write(requests.get('https://raw.githubusercontent.com/lanarhoades-source/bash_aliases/master/aliases').text)
 
 
-# In[34]:
-
-
 responde=requests.get('https://github.com/lanarhoades-source/FUNctions').text
-script_list=re.findall(r'master/.*?py',responde)
-
-
-# In[69]:
+script_list=[x.split('/')[1] for x in re.findall(r'master/.*?py',responde)]
 
 
 for x in script_list:
@@ -43,9 +27,3 @@ for x in script_list:
     with open(filename,'w') as f:
         f.write(requests.get(complete_url))
     os.chmod(filename,stat.S_IRWXU)
-    
-# In[ ]:
-
-
-
-
