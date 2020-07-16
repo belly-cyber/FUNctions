@@ -4,7 +4,7 @@
 import os,requests,re,stat
 from getpass import getuser
 
-raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/'
+raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/master'
 path='/home/{}/'.format(getuser())
 
 
