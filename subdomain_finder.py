@@ -1,26 +1,38 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[ ]:
 
 
-import requests,re,socket
+import requests,re,socket,subprocess
 
 
-# In[26]:
+# In[ ]:
 
 
 domain_name=input('type in the website in question:  ')
 
 
-# In[28]:
+# In[ ]:
 
 
 website=requests.get('http://www.{}.com'.format(domain_name))
 sub_domains=re.findall(r'[^/]*\.{}\.com'.format(domain_name),website.text)
+whois_result=str(subprocess.check_output(['whois',domain_name+'.com']),'utf-8')
+dns_ips={x.split(':')[1]for x in re.findall(r'Name Server:\s\S+',whois_result)}
+for x in dns_ips:
+    sub_domains.append(x.strip())
+    
 ip_dic={x:socket.gethostbyname(x) for x in sub_domains}
+
 for k,v in ip_dic.items():
     print('{} : {}'.format(k,v))
+
+
+# In[ ]:
+
+
+
 
 
 # In[ ]:
