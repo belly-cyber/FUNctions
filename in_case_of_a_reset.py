@@ -4,7 +4,7 @@
 import os,requests,re,stat
 from getpass import getuser
 
-raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/master'
+raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/master/'
 path='/home/{}/'.format(getuser())
 
 
@@ -25,5 +25,5 @@ for x in script_list:
     complete_url=raw_url+x
     filename=path+'scripts/'+x
     with open(filename,'w') as f:
-        f.write(requests.get(complete_url))
+        f.write(requests.get(complete_url).text)
     os.chmod(filename,stat.S_IRWXU)
