@@ -24,7 +24,7 @@ if os.path.exists(path+'scripts/') == False:
 with open(path+'.bashrc','a') as f:
     f.write('export PATH={}scripts:$PATH'.format(path))
 with open(path+'.bash_aliases','a') as f:
-    f.write(requests.get('https://raw.githubusercontent.com/lanarhoades-source/bash_aliases/master/aliases'))
+    f.write(requests.get('https://raw.githubusercontent.com/lanarhoades-source/bash_aliases/master/aliases').text)
 
 
 # In[34]:
