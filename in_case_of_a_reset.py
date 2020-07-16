@@ -4,7 +4,7 @@
 # In[70]:
 
 
-import os,requests,re
+import os,requests,re,stat
 from getpass import getuser
 
 
@@ -12,7 +12,7 @@ from getpass import getuser
 
 
 raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/'
-path='/home/{}/'.format(getuser)
+path='/home/{}/'.format(getuser())
 
 
 # In[30]:
@@ -39,10 +39,11 @@ script_list=re.findall(r'master/.*?py',responde)
 
 for x in script_list:
     complete_url=raw_url+x
-    with open(path+'scripts/'+x,'w') as f:
+    filename=path+'scripts/'+x
+    with open(filename,'w') as f:
         f.write(requests.get(complete_url))
-
-
+    os.chmod(filename,stat.S_IRWXU)
+    
 # In[ ]:
 
 
