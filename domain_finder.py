@@ -24,12 +24,12 @@ for host in host_list:
 ip_dic={}
 print('\t\tresolving domain to IP\n')
 for x in sub_domains:
+    x=x.lower()
     try:
         ip_dic.update({x:socket.gethostbyname(x)})
         try:
             dns_tranfer=str(subprocess.check_output(['host','-l',domain_name,x]),'utf-8')
             print('\t\tperfoming zone tranfer on {}\n'.format(x))
-            print(dns_tranfer)
         except:
             pass
     except:
