@@ -11,19 +11,24 @@ with open('/usr/share/seclists/Discovery/DNS/namelist.txt') as f:
 
 domain_name=input('type in the website in question:  ')
 
-website=requests.get('http://www.{}.com'.format(domain_name))
-sub_domains=re.findall(r'[^/]*\.{}\.com'.format(domain_name),website.text)
-whois_result=str(subprocess.check_output(['whois',domain_name+'.com']),'utf-8')
+website=requests.get('http://www.{}'.format(domain_name))
+sub_domains=re.findall(r'[^/]*\.{}'.format(domain_name),website.text)
+whois_result=str(subprocess.check_output(['whois',domain_name]),'utf-8')
 dns_ips={x.split(':')[1]for x in re.findall(r'Name Server:\s\S+',whois_result)}
 for x in dns_ips:
     sub_domains.append(x.strip())
 for host in host_list:
-    sub_domains.append(host+'.'+domain_name+'.com')
+    sub_domains.append(host+'.'+domain_name)
 ip_dic={}
 for x in sub_domains:
     print(x)
     try:
         ip_dic.update({x:socket.gethostbyname(x)})
+        try:
+            dns_tranfer=subprocess.check_output(['host','-l',domain_name,x])
+            print(dns_tranfer)
+        except:
+            print('no dns tranferable server')
     except:
         pass
     
