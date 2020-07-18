@@ -21,6 +21,7 @@ for host in host_list:
     sub_domains.append(host+'.'+domain_name)
 ip_dic={}
 for x in sub_domains:
+    x=x.lower()
     try:
         ip_dic.update({x:socket.gethostbyname(x)})
         try:
