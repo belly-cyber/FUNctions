@@ -31,6 +31,7 @@ for x in sub_domains:
             print('\t\tperfoming zone tranfer on {}\n'.format(x))
             print(dns_tranfer)
         except:
+            pass
     except:
         pass
 
