@@ -12,7 +12,9 @@ with open('/usr/share/seclists/Discovery/DNS/namelist.txt') as f:
 domain_name=input('type in the website in question:  ')
 
 website=requests.get('http://www.{}'.format(domain_name))
+print('\t\tsearching for domains in www.{}\n'.format(domain_name))
 sub_domains=re.findall(r'[^/]*\.{}'.format(domain_name),website.text)
+print('\t\tsearching domains against whois\n')
 whois_result=str(subprocess.check_output(['whois',domain_name]),'utf-8')
 dns_ips={x.split(':')[1]for x in re.findall(r'Name Server:\s\S+',whois_result)}
 for x in dns_ips:
@@ -20,37 +22,19 @@ for x in dns_ips:
 for host in host_list:
     sub_domains.append(host+'.'+domain_name)
 ip_dic={}
+print('\t\tresolving domain to IP\n')
 for x in sub_domains:
-    x=x.lower()
     try:
         ip_dic.update({x:socket.gethostbyname(x)})
         try:
             dns_tranfer=str(subprocess.check_output(['host','-l',domain_name,x]),'utf-8')
-            print('perfoming zone tranfer on {}'.format(x))
+            print('\t\tperfoming zone tranfer on {}\n'.format(x))
             print(dns_tranfer)
-            
-            dns_tranfer=dns_tranfer.split('\n')
-            for line in dns_tranfer:
-                if 'has address' in line:
-                    line=line.split()
-                    ip_dic.update({line[0]:line[-1]})
         except:
-            pass
     except:
         pass
-    
-for k,v in ip_dic.items():
-    print('{} : {}'.format(k,v))
 
+for k in sorted(ip_dic.keys()):
+    print('{} : {}'.format(k,ip_dic[k]))
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-
-
+print('\n\t\t{} domains found for {}'.format(len(ip_dic.keys()),domain_name))
