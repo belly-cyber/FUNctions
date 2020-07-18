@@ -21,14 +21,14 @@ for host in host_list:
     sub_domains.append(host+'.'+domain_name)
 ip_dic={}
 for x in sub_domains:
-    print(x)
     try:
         ip_dic.update({x:socket.gethostbyname(x)})
         try:
-            dns_tranfer=subprocess.check_output(['host','-l',domain_name,x])
+            dns_tranfer=str(subprocess.check_output(['host','-l',domain_name,x]),'utf-8')
+            print('perfoming zone tranfer on {}'.format(x))
             print(dns_tranfer)
         except:
-            print('no dns tranferable server')
+            pass
     except:
         pass
     
