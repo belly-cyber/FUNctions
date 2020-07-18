@@ -121,9 +121,16 @@ whois_result=str(subprocess.check_output(['whois',domain_name+'.com']),'utf-8')
 dns_ips={x.split(':')[1]for x in re.findall(r'Name Server:\s\S+',whois_result)}
 for x in dns_ips:
     sub_domains.append(x.strip())
+for host in host_list:
+    sub_domains.append(host+'.'+domain_name+'.com')
+ip_dic={}
+for x in sub_domains:
+    print(x)
+    try:
+        ip_dic.update({x:socket.gethostbyname(x)})
+    except:
+        pass
     
-ip_dic={x:socket.gethostbyname(x) for x in sub_domains}
-
 for k,v in ip_dic.items():
     print('{} : {}'.format(k,v))
 
