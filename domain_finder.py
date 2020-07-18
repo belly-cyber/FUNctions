@@ -30,6 +30,10 @@ for x in sub_domains:
         try:
             dns_tranfer=str(subprocess.check_output(['host','-l',domain_name,x]),'utf-8')
             print('\t\tperfoming zone tranfer on {}\n'.format(x))
+            for line in dns_tranfer.split('\n'):
+                if 'has address' in line:
+                    line=line.split()
+                    ip_dic.update({line[0]:line[-1]})
         except:
             pass
     except:
