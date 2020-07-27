@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[4]:
+# In[ ]:
 
 
 import sys,requests
@@ -10,8 +10,6 @@ import multiprocessing as mp
 
 default_timer=.5
 website=sys.argv[1]
-website='http://www.megacorpone.com'
-
 
 def web_checker(dirc):
     sleep(default_timer)
@@ -31,7 +29,7 @@ def mp_web_checker(dirc):
         print('{}\t{}'.format(full_address,response))
 
 
-# In[5]:
+# In[ ]:
 
 
 man='''
@@ -69,10 +67,14 @@ elif len(sys.argv)>2:
         my_strings=string.printable[:62]+'@#~._-'
         for number in range(1,len(my_strings)):
             for name in itertools.combinations_with_replacement(my_strings,number):
-                pool=mp.Pool(mp.cpu_count())
-                pool.map(mp_web_checker,itertools.combinations_with_replacement(my_strings,number))
-                pool.join()
-                pool.close()                    
+                try:
+                    pool=mp.Pool(mp.cpu_count())
+                    pool.map(mp_web_checker,itertools.combinations_with_replacement(my_strings,number))
+                    pool.join()
+                    pool.close()
+                except KeyboardInterrupt:
+                    print("Caught KeyboardInterrupt, terminating workers")
+                    pool.terminate()
     else:
         print('using {} as wordlist'.format(sys.argv[2]))
         with open(sys.argv[2]) as f:
@@ -82,11 +84,14 @@ else:
     sys.exit()
 
 
-
-pool=mp.Pool(mp.cpu_count())
-pool.map(web_checker,wordlist)
-pool.join()
-pool.close()
+try:
+    pool=mp.Pool(mp.cpu_count())
+    pool.map(web_checker,wordlist)
+    pool.join()
+    pool.close()
+except KeyboardInterrupt:
+        print("Caught KeyboardInterrupt, terminating workers")
+        pool.terminate()
 
 
 # In[ ]:
