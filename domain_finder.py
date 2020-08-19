@@ -9,7 +9,7 @@ import requests,re,socket,subprocess
 with open('/usr/share/seclists/Discovery/DNS/namelist.txt') as f:
     host_list=[f.readline().strip() for x in f]
 
-domain_name=input('type in the website in question:  ')
+domain_name=input('type in the website in question:\nfor example megacorpone')+'.com'
 
 website=requests.get('http://www.{}'.format(domain_name))
 print('\t\tsearching for domains in www.{}\n'.format(domain_name))
