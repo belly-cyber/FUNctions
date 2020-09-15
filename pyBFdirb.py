@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 
 # In[ ]:
@@ -14,7 +14,7 @@ website=sys.argv[1]
 def web_checker(dirc):
     sleep(default_timer)
     full_address='{}/{}'.format(website,dirc)
-    print(full_address)
+    #print(full_address)
     response=requests.get(full_address)
     if 404 != response.status_code:
         print('{}\t{}'.format(full_address,response))
@@ -23,7 +23,7 @@ def mp_web_checker(dirc):
     sleep(default_timer)
     dirc=''.join(dirc)
     full_address='{}/{}'.format(website,dirc)
-    print(full_address)
+    #print(full_address)
     response=requests.get(full_address)
     if 404 != response.status_code:
         print('{}\t{}'.format(full_address,response))
@@ -90,12 +90,6 @@ try:
     pool.join()
     pool.close()
 except KeyboardInterrupt:
-        print("Caught KeyboardInterrupt, terminating workers")
-        pool.terminate()
-
-
-# In[ ]:
-
-
-
+    print("Caught KeyboardInterrupt, terminating workers")
+    pool.terminate()
 
