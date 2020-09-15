@@ -18,7 +18,7 @@ with open(path+'.bash_aliases','a') as f:
 
 
 responde=requests.get('https://github.com/lanarhoades-source/FUNctions').text
-script_list=[x.split('/')[1] for x in re.findall(r'master/.*?py',responde)]
+script_list=[x.split('/')[1] for x in re.findall(r'master/.*?\.py',responde)]
 
 
 for x in script_list:
@@ -27,3 +27,8 @@ for x in script_list:
     with open(filename,'w') as f:
         f.write(requests.get(complete_url).text)
     os.chmod(filename,stat.S_IRWXU)
+
+subprocess.call(['sudo','apt','update'])
+subprocess.call(['sudo','apt','install','seclists'])
+subprocess.call(['sudo','apt','install','mingw-w64'])
+subprocess.call(['sudo','apt','install','nmap'])
