@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-import os,requests,re,stat
+import os,requests,re,stat,subprocess
 from getpass import getuser
+
 
 raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/master/'
 path='/home/{}/'.format(getuser())
