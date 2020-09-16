@@ -72,7 +72,7 @@ try:
     if 'http' not in website:
         website = "http://"+website
     pool=mp.Pool(mp.cpu_count())
-    pool.map(web_checker,wordlist)
+    pool.map(mp_web_checker,wordlist)
     pool.join()
     pool.close()
 except KeyboardInterrupt:
