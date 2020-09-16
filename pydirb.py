@@ -39,13 +39,6 @@ elif len(sys.argv) < 2:
     print(man)
     sys.exit()
     
-if len(sys.argv)==2:
-    print('using default wordlist')
-    with open('/usr/share/dirb/wordlists/common.txt') as f:
-        wordlist=[x.strip('\n') for x in f.readlines()]
-    
-
-    
 elif len(sys.argv)>2:
     if '--ballbuster' in sys.argv[2]:
         user_ans=input('are you sure you want to mouth fuck the website:\ntype yes or no\n')
@@ -67,9 +60,13 @@ elif len(sys.argv)>2:
                     pool.terminate()
     
     elif "-l" in sys.argv or '--list' in sys.argv:
-        wordlist = sys.argv[sys.argv.index('-l')+1]
-        print('using {} as wordlist'.format(sys.argv[2]))
-        with open(sys.argv[2]) as f:
+        wordlist_path = sys.argv[sys.argv.index('-l')+1]
+        print('using {} as wordlist'.format(wordlist_path))
+        with open(wordlist_path) as f:
+            wordlist=[x.strip('\n') for x in f.readlines()]
+    else:
+        print('using default wordlist')
+        with open('/usr/share/dirb/wordlists/common.txt') as f:
             wordlist=[x.strip('\n') for x in f.readlines()]
 else:
     print(man)
