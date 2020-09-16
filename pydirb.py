@@ -12,7 +12,9 @@ def mp_web_checker(dirc):
     #print(full_address)
     response=requests.get(full_address)
     if 404 != response.status_code:
-        print('{}\t{}'.format(full_address,response))
+        result = '{}\t{}'.format(full_address,response)
+        print(result)
+        return result
 
 man='''
     pyBFdirb.py http://<host/website> <optional wordlist> options     
@@ -21,6 +23,8 @@ man='''
     --ballbuster\twill try and bruteforce directories 
     
     --timer\twill change the default time between calls in seconds
+    
+    -s or --save <filename> saves results to text file
 '''
 default_timer=.5
 website=sys.argv[1]
@@ -72,9 +76,13 @@ try:
     if 'http' not in website:
         website = "http://"+website
     pool=mp.Pool(mp.cpu_count())
-    pool.map(mp_web_checker,wordlist)
-    pool.join()
+    results=pool.map(mp_web_checker,wordlist)
+    if '-s' in sys.argv or '--save' sys.argv:
+        with open(sys.argv[-1],'w') as f:
+            for x in results:
+                f.write(x)
     pool.close()
+    pool.join()
 except KeyboardInterrupt:
     print("Caught KeyboardInterrupt, terminating workers")
     pool.terminate()
