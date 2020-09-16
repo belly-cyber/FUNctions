@@ -1,23 +1,9 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-# In[ ]:
-
-
 import sys,requests
 from time import sleep
 import multiprocessing as mp
-
-default_timer=.5
-website=sys.argv[1]
-
-def web_checker(dirc):
-    sleep(default_timer)
-    full_address='{}/{}'.format(website,dirc)
-    #print(full_address)
-    response=requests.get(full_address)
-    if 404 != response.status_code:
-        print('{}\t{}'.format(full_address,response))
 
 def mp_web_checker(dirc):
     sleep(default_timer)
@@ -28,24 +14,22 @@ def mp_web_checker(dirc):
     if 404 != response.status_code:
         print('{}\t{}'.format(full_address,response))
 
-
-# In[ ]:
-
-
 man='''
-    pyBFdirb.py http://<host/website> <optional wordlist> options           )
+    pyBFdirb.py http://<host/website> <optional wordlist> options     
     
     
     --ballbuster\twill try and bruteforce directories 
     
     --timer\twill change the default time between calls in seconds
 '''
+default_timer=.5
+website=sys.argv[1]
 
 
-if 'help' in sys.argv:
+if 'help' in sys.argv or 'man' in sys.argv:
     print(man)
     sys.exit()
-elif len(sys.argv) <2:
+elif len(sys.argv) < 2:
     print(man)
     sys.exit()
     
@@ -85,6 +69,8 @@ else:
 
 
 try:
+    if 'http' not in website:
+        website = "http://"+website
     pool=mp.Pool(mp.cpu_count())
     pool.map(web_checker,wordlist)
     pool.join()
