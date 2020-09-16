@@ -25,6 +25,8 @@ man='''
     --timer\twill change the default time between calls in seconds
     
     -s or --save <filename> saves results to text file
+    
+    -l or --list <pathname> of wordlist you would like to use
 '''
 default_timer=.5
 website=sys.argv[1]
@@ -63,7 +65,9 @@ elif len(sys.argv)>2:
                 except KeyboardInterrupt:
                     print("Caught KeyboardInterrupt, terminating workers")
                     pool.terminate()
-    else:
+    
+    elif "-l" in sys.argv or '--list' in sys.argv:
+        wordlist = sys.argv[sys.argv.index('-l')+1]
         print('using {} as wordlist'.format(sys.argv[2]))
         with open(sys.argv[2]) as f:
             wordlist=[x.strip('\n') for x in f.readlines()]
@@ -77,7 +81,7 @@ try:
         website = "http://"+website
     pool=mp.Pool(mp.cpu_count())
     results=pool.map(mp_web_checker,wordlist)
-    if '-s' in sys.argv or '--save' sys.argv:
+    if '-s' in sys.argv or '--save' in sys.argv:
         with open(sys.argv[-1],'w') as f:
             for x in results:
                 f.write(x)
