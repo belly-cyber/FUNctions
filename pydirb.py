@@ -81,7 +81,8 @@ try:
     if '-s' in sys.argv or '--save' in sys.argv:
         with open(sys.argv[-1],'w') as f:
             for x in results:
-                f.write(x)
+                if x != None:
+                    f.write(x)
     pool.close()
     pool.join()
 except KeyboardInterrupt:
