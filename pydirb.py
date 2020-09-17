@@ -82,7 +82,7 @@ try:
         with open(sys.argv[-1],'w') as f:
             for x in results:
                 if x != None:
-                    f.write(x)
+                    f.write(x+'\n')
     pool.close()
     pool.join()
 except KeyboardInterrupt:
