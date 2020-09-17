@@ -34,5 +34,6 @@ subprocess.call(['sudo','apt','install','seclists'])
 subprocess.call(['sudo','apt','install','mingw-w64'])
 subprocess.call(['sudo','apt','install','nmap'])
 subprocess.call(['sudo','apt','install','python3-paramiko'])
+subprocess.call(['python3','-m','pip','install cffi'])
 
 
