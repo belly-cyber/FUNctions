@@ -284,15 +284,6 @@ def find_outlier(integers):
         return [x for x in integers if x%2!=0][0]
 
 
-# In[ ]:
-
-
-
-
-
-# In[516]:
-
-
 def order_weight(strng):
     w={sum([int(y) for y in x]):x for x in strng.split()} 
     for x in sorted(w.items())
@@ -300,7 +291,21 @@ def order_weight(strng):
     print(w)
 
 
-# In[ ]:
+def inthisweek(date):
+    from datetime import *
+    """
+    input = str of 'year-month-day'
+    returns wether a given date falls in the current work week"
+    """       
+    date=datetime.strptime(date,"%Y-%m-%d").date()
+    today = datetime.today().date()
+    days = timedelta(today.weekday())
+    monday=today-days
+    
+    if monday <= date:
+        return True
+    else:
+        return False
 
 
 

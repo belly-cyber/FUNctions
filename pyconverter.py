@@ -15,11 +15,12 @@ import sys
 py2 = sys.argv[1]
 py3 = 'v3_'+py2
 
-with open(py2) as f2, open(py3) as f3:
+with open(py2,'r') as f2, open(py3,'w') as f3:
     for line in f2.readlines():
         if "print" in line:
-            start_point = line.index('print')+5
-            new_line = line[start_point:]+'(' line[:start_point+1]
+            line = line.rstrip()
+            point = line.index('print')+4
+            new_line = line[point:]+'('+line[:point+1]+')\n'
             f3.write(new_line)
         else:
             f3.write(line)

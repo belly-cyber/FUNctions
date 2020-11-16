@@ -1,6 +1,4 @@
 # FUNctions
-see that i did there 
+see that I did there?
 
-functions that automates parts of discovery
-
-if you can understand it you use it 
+if you can understand it you can use it 
