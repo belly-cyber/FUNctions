@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+from base64 import b64encode,b64decode
+from random import choice,choices,shuffle
+from string import ascii_uppercase
+from sys import argv
+
+if len(argv) <= 1:
+    payload = input('paste your payload below:\n')
+else:
+    payload = ' '.join(argv[1:])
+
+test='hello from the otherside!'
+
+#payload=test
+
+payload = b64encode(payload.encode('utf-8')).decode()
+
+dic={}
+while len(payload) >0:
+    str_len,var_len=choices(range(5,9),k=2)
+    seg=payload[:str_len]
+    payload = payload.replace(seg,'',1)
+    key=''.join(choices(ascii_uppercase,k=var_len))
+    while key in dic:
+        key=choices(ascii_uppercase,k=var_len)
+    dic[key]=seg
+
+scrabled_list=list(dic.keys())
+shuffle(scrabled_list)
+print('declare variables:\nDim {}\n\n'.format(','.join(scrabled_list)))
+print('scrabled values:')
+for k in scrabled_list:
+    print('{} = "{}"'.format(k,dic[k]))
+
+print('\n'*2)
+print('variables in order:')
+print('+'.join(dic.keys()))
+print('\n'*2)
+print('payload after deobfucation:')
+print(b64decode(''.join(dic.values())).decode())
