@@ -5,7 +5,7 @@ import os,requests,re,stat,subprocess
 from getpass import getuser
 
 
-raw_url='https://raw.githubusercontent.com/lanarhoades-source/FUNctions/master/'
+raw_url='https://raw.githubusercontent.com/belly-cyber/FUNctions/master/'
 path='/home/{}/'.format(getuser())
 
 
@@ -15,10 +15,10 @@ if os.path.exists(path+'scripts/') == False:
 with open(path+'.bashrc','a') as f:
     f.write('export PATH={}scripts:$PATH'.format(path))
 with open(path+'.bash_aliases','a') as f:
-    f.write(requests.get('https://raw.githubusercontent.com/lanarhoades-source/bash_aliases/master/aliases').text)
+    f.write(requests.get('https://raw.githubusercontent.com/belly-cyber/bash_aliases/master/aliases').text)
 
 
-responde=requests.get('https://github.com/lanarhoades-source/FUNctions').text
+responde=requests.get('https://github.com/belly-cyber/FUNctions').text
 script_list=[x.split('/')[1] for x in re.findall(r'master/.*?\.py',responde)]
 
 
