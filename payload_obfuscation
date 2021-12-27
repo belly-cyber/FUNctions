@@ -4,18 +4,22 @@ from random import choice,choices,shuffle
 from string import ascii_uppercase
 from sys import argv
 
-if len(argv) <= 1:
-    payload = input('paste your payload below:\n')
+if '--filename' in argv[2]:
+    filename=argv[argv.index('--filename')]
+    with open(filename,'r') as f:
+        payload=f.read().strip()
+
+elif len(argv) <= 1:
+    payload = input('paste your payload below or type:\n')
 else:
-    payload = ' '.join(argv[1:])
+    payload = ' '.join(argv[1:]).strip()
 
-test='hello from the otherside!'
-
-#payload=test
+payload='hello from the otherside please dont be mean'
 
 payload = b64encode(payload.encode('utf-8')).decode()
 
 dic={}
+
 while len(payload) >0:
     str_len,var_len=choices(range(5,9),k=2)
     seg=payload[:str_len]
@@ -34,7 +38,7 @@ for k in scrabled_list:
 
 print('\n'*2)
 print('variables in order:')
-print('+'.join(dic.keys()))
+print(' + '.join(dic.keys()))
 print('\n'*2)
 print('payload after deobfucation:')
 print(b64decode(''.join(dic.values())).decode())
