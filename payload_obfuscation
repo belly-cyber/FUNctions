@@ -4,7 +4,7 @@ from random import choice,choices,shuffle
 from string import ascii_uppercase
 from sys import argv
 
-if '--filename' in argv[2]:
+if len(argv) >=2 and '--filename' in argv[2]:
     filename=argv[argv.index('--filename')]
     with open(filename,'r') as f:
         payload=f.read().strip()
@@ -31,7 +31,7 @@ while len(payload) >0:
 
 scrabled_list=list(dic.keys())
 shuffle(scrabled_list)
-print('declare variables:\nDim {}\n\n'.format(','.join(scrabled_list)))
+print('\n\ndeclare variables:\nDim {}\n\n'.format(','.join(scrabled_list)))
 print('scrabled values:')
 for k in scrabled_list:
     print('{} = "{}"'.format(k,dic[k]))
@@ -41,4 +41,4 @@ print('variables in order:')
 print(' + '.join(dic.keys()))
 print('\n'*2)
 print('payload after deobfucation:')
-print(b64decode(''.join(dic.values())).decode())
+print('***{}***'.format(b64decode(''.join(dic.values())).decode()))
