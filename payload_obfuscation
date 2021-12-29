@@ -1,44 +1,62 @@
 #!/usr/bin/python3
 from base64 import b64encode,b64decode
 from random import choice,choices,shuffle
-from string import ascii_uppercase
-from sys import argv
+from string import ascii_letters
 
-if len(argv) >=2 and '--filename' in argv[2]:
-    filename=argv[argv.index('--filename')]
-    with open(filename,'r') as f:
+def segmenter(string,minlen=10,maxlen=20):
+    '''iterates through given string and segments the string into randomized size
+    between "minlen" and "maxlen". Giving it a key to associate to it for later.
+    returns a dictinary of key(random_str):value(segmented string)'''
+
+    dic={}
+    while len(string) > 0:
+        key_len   = choice(range(3,7))
+        value_len = choice(range(minlen,maxlen))
+        segment   = string[:value_len]
+        string    = string.replace(segment,'',1)
+        key       = ''.join(choices(ascii_letters,k=key_len))
+        while key in dic:
+            key=''.join(choices(ascii_letters,k=key_len))
+        dic[key]=segment
+    return dic
+
+intro='''
+    welcome to segmenter.py
+type the following to segment a file
+--file <filename>   
+or just paste the oneliner below:
+'''
+print('\n'*100)
+userinput = input(intro)
+
+if '--file' == userinput[:6].lower():
+    filename=userinput.split()[-1]
+    with open(filename,'rb') as f:
         payload=f.read().strip()
-
-elif len(argv) <= 1:
-    payload = input('paste your payload below or type:\n')
+    payload = b64encode(payload).decode()
 else:
-    payload = ' '.join(argv[1:]).strip()
+    payload = b64encode(userinput.strip().encode('utf-8')).decode()
 
-payload='hello from the otherside please dont be mean'
-
-payload = b64encode(payload.encode('utf-8')).decode()
-
-dic={}
-
-while len(payload) >0:
-    str_len,var_len=choices(range(5,9),k=2)
-    seg=payload[:str_len]
-    payload = payload.replace(seg,'',1)
-    key=''.join(choices(ascii_uppercase,k=var_len))
-    while key in dic:
-        key=choices(ascii_uppercase,k=var_len)
-    dic[key]=seg
-
-scrabled_list=list(dic.keys())
+obf_dic=segmenter(payload)
+scrabled_list=list(obf_dic.keys())
 shuffle(scrabled_list)
-print('\n\ndeclare variables:\nDim {}\n\n'.format(','.join(scrabled_list)))
-print('scrabled values:')
-for k in scrabled_list:
-    print('{} = "{}"'.format(k,dic[k]))
 
-print('\n'*2)
-print('variables in order:')
-print(' + '.join(dic.keys()))
-print('\n'*2)
-print('payload after deobfucation:')
-print('***{}***'.format(b64decode(''.join(dic.values())).decode()))
+dim_list = ','.join(scrabled_list)
+values   = '\n'.join(['    {} = "{}"'.format(k,obf_dic[k]) for k in scrabled_list])
+deobf    = b64decode(''.join(obf_dic.values())).decode()
+s_values = ' + '.join(obf_dic.keys())
+
+product=f"""\
+    'declare variables:
+    Dim {dim_list}
+
+    'scrabled values:
+{values}
+
+    'dim payload
+    payload = {s_values}
+
+payload after deobfucation:
+{deobf}
+"""
+print(product)
