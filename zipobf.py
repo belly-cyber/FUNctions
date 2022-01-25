@@ -23,7 +23,7 @@ def segmenter(string,minlen=75,maxlen=100):
         dic[key]=segment
     return dic
     
-payload_file=sys.argv[0]
+payload_file=sys.argv[1]
 
 with open(payload_file,'rb') as f:
     original_payload = f.read()
